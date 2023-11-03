@@ -1,14 +1,13 @@
 package br.edu.ifpb.domain;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 public class Paciente implements Serializable {
     private String nome;
     private Date dataDeNascimento;
-    private String cpf;
+    private final String cpf;
 
     public Paciente(String nome, Date dataDeNascimento, String cpf) {
         this.nome = nome;
@@ -36,10 +35,6 @@ public class Paciente implements Serializable {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,11 +49,6 @@ public class Paciente implements Serializable {
 
     @Override
     public String toString() {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        return "Paciente{" +
-                "nome='" + nome + '\'' +
-                ", dataDeNascimento=" + df.format(dataDeNascimento) +
-                ", cpf='" + cpf + '\'' +
-                '}';
+        return String.format("%s (%s)", nome, cpf);
     }
 }

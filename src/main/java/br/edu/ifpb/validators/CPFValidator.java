@@ -7,7 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CPFValidator implements Validator<String> {
-    private PacienteService pacienteService = new PacienteService(PacienteRepository.getInstance());
+    private final PacienteService pacienteService = new PacienteService(PacienteRepository.getInstance());
+    private final boolean checkIfExists;
+
+    public CPFValidator(boolean checkIfExists) {
+        this.checkIfExists = checkIfExists;
+    }
+
     @Override
     public boolean validate(String data) {
         String cpfPattern = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
@@ -16,12 +22,6 @@ public class CPFValidator implements Validator<String> {
         Pattern pattern = Pattern.compile(cpfPattern);
         Matcher matcher = pattern.matcher(data);
 
-        if (!matcher.matches()) {
-            return false;
-        } else if (pacienteService.existe(data)) {
-            return false;
-        }
-
-        return true;
+        return matcher.matches() && (!checkIfExists || !pacienteService.existe(data));
     }
 }

@@ -8,7 +8,8 @@ import br.edu.ifpb.validators.NonEmptyValidator;
 import br.edu.ifpb.validators.OptionalDateValidator;
 import br.edu.ifpb.validators.ValidationContext;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,17 +42,21 @@ public class EditarPacienteCommand implements Command {
         String nome = new Scanner(System.in).nextLine();
 
         strValidationContext.setValidator(new OptionalDateValidator());
-        Date data = null;
         String dataStr = strValidationContext.getValidValue("Digite uma nova data de nascimento (ou deixe vazio para não mudar): ", "Formato de data incorreto, use o formato 'dd/MM/yyyy'", String.class);
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
         if (!nome.equals("")) {
             toEdit.setNome(nome);
         }
         if (!dataStr.equals("")) {
-            toEdit.setDataDeNascimento(data);
+            try {
+                toEdit.setDataDeNascimento(df.parse(dataStr));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        pacienteService.editar(toEdit);
+        pacienteService.editar(toEdit.getNome(), toEdit.getDataDeNascimento(), toEdit.getCpf());
         System.out.println("\nPaciente editado");
     }
 }

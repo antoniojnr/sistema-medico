@@ -22,7 +22,7 @@ public class CadastrarPacienteCommand implements Command {
         strValidationContext.setValidator(new DateValidator());
         String dataStr = strValidationContext.getValidValue("Data de nascimento: ", "Formato de data incorreto, use o formato 'dd/MM/yyyy'", String.class);
 
-        strValidationContext.setValidator(new CPFValidator());
+        strValidationContext.setValidator(new CPFValidator(true));
         String cpf = strValidationContext.getValidValue("CPF: ", "CPF inválido ou já cadastrado (formato: xxx.xxx.xxx-xx)", String.class);
 
         pacienteService.criar(nome, dataStr, cpf);

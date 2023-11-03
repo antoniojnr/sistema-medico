@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public class PacienteService {
-    private PacienteRepository repository;
+    private final PacienteRepository repository;
 
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
@@ -24,6 +24,10 @@ public class PacienteService {
         }
     }
 
+    public Paciente get(int index) {
+        return repository.getAll().get(index);
+    }
+
     public List<Paciente> buscar(String termo) {
         return repository.search(termo);
     }
@@ -36,8 +40,8 @@ public class PacienteService {
         return repository.exists(cpf);
     }
 
-    public void editar(Paciente p) {
-        repository.update(p);
+    public void editar(String nome, Date data, String cpf) {
+        repository.update(new Paciente(nome, data, cpf));
     }
 
     public void remover(Paciente p) {
